@@ -30,6 +30,7 @@ class MobileChart extends StatefulWidget {
   final double candleWidth;
 
   /// list of all candles to display in chart
+  final String symbol;
   final List<Candle> candles;
 
   /// index of the newest candle to be displayed
@@ -56,6 +57,7 @@ class MobileChart extends StatefulWidget {
     required this.onScaleUpdate,
     required this.onHorizontalDragUpdate,
     required this.candleWidth,
+    required this.symbol,
     required this.candles,
     required this.index,
     required this.chartAdjust,
@@ -171,6 +173,7 @@ class _MobileChartState extends State<MobileChart> {
                             flex: 3,
                             child: Stack(
                               children: [
+			        // draw the price numbers
                                 PriceColumn(
                                   style: widget.style,
                                   low: candlesLowPrice,
@@ -185,6 +188,10 @@ class _MobileChartState extends State<MobileChart> {
                                       manualScaleLow = candlesLowPrice;
                                     }
                                     setState(() {
+                                      manualScaleHigh = null;  // disable scale
+                                      manualScaleLow  = null;
+                                      return;
+				      /*
                                       double deltaPrice = delta /
                                           chartHeight *
                                           (manualScaleHigh! - manualScaleLow!);
@@ -192,9 +199,11 @@ class _MobileChartState extends State<MobileChart> {
                                           manualScaleHigh! + deltaPrice;
                                       manualScaleLow =
                                           manualScaleLow! - deltaPrice;
+					  */
                                     });
                                   },
                                 ),
+				// price candles
                                 Row(
                                   children: [
                                     Expanded(
@@ -251,6 +260,7 @@ class _MobileChartState extends State<MobileChart> {
                               ],
                             ),
                           ),
+			  // volume row
                           Expanded(
                             flex: 1,
                             child: Row(
@@ -310,6 +320,7 @@ class _MobileChartState extends State<MobileChart> {
                           ),
                           SizedBox(
                             height: DATE_BAR_HEIGHT,
+			    // child: Text("symbol")
                           ),
                         ],
                       ),
@@ -396,9 +407,8 @@ class _MobileChartState extends State<MobileChart> {
                                       details.focalPointDelta.dy /
                                           chartHeight *
                                           (manualScaleHigh! - manualScaleLow!);
-                                  manualScaleHigh =
-                                      manualScaleHigh! + deltaPrice;
-                                  manualScaleLow = manualScaleLow! + deltaPrice;
+                                  manualScaleHigh = manualScaleHigh! + deltaPrice;
+                                  manualScaleLow  = manualScaleLow!  + deltaPrice;
                                 }
                               });
                             }
@@ -441,6 +451,7 @@ class _MobileChartState extends State<MobileChart> {
                               .mainWindowDataContainer.unvisibleIndicators,
                         ),
                       ),
+		      // symbol
                       Positioned(
                         right: 0,
                         bottom: 0,
@@ -452,7 +463,7 @@ class _MobileChartState extends State<MobileChart> {
                             primary: widget.style.hoverIndicatorBackgroundColor,
                           ),
                           child: Text(
-                            "Auto",
+                            widget.symbol,
                             style: TextStyle(
                               color: widget.style.secondaryTextColor,
                               fontSize: 12,

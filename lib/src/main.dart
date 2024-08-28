@@ -21,6 +21,7 @@ enum ChartAdjust {
 class Candlesticks extends StatefulWidget {
   /// The arrangement of the array should be such that
   /// the newest item is in position 0
+  final String symbol;
   final List<Candle> candles;
 
   /// This callback calls when the last candle gets visible
@@ -48,6 +49,7 @@ class Candlesticks extends StatefulWidget {
 
   const Candlesticks({
     Key? key,
+    required this.symbol,
     required this.candles,
     this.onLoadMoreCandles,
     this.actions = const [],
@@ -270,6 +272,7 @@ class _CandlesticksState extends State<Candlesticks> {
                       }
                     },
                     candleWidth: width,
+                    symbol:  widget.symbol,
                     candles: widget.candles,
                     index: index,
                   );
